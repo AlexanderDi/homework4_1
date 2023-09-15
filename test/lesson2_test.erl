@@ -1,9 +1,55 @@
+-module(lesson2_test).
 -ifdef(TEST).
 -include_lib("eunit/include/eunit.hrl").
 
 lesson2_test_() -> [
   ?_assert(lesson2_task01:last([a,b,c]) =:= c),
   ?_assert(lesson2_task01:last([a,b,c,f,d]) =:= d),
-  ?_assert(lesson2_task01:last([a,b,c,d,f,g]) =:= g)
-].
+  ?_assert(lesson2_task01:last([a,b,c,d,f,g]) =:= g),
+  ?_assert(lesson2_task02:but_last([a,b,c,d,f,g]) =:= {f,g}),
+  ?_assert(lesson2_task02:but_last([a,b,c,d,g]) =:= {d,g}),
+  ?_assert(lesson2_task02:but_last([a,b,c,d]) =:= {c,d}),
+  ?_assert(lesson2_task03:element_at([a, b, c, d, e, f], 4) =:= d),
+  ?_assert(lesson2_task03:element_at([a, b, c, d, e, f], 2) =:= b),
+  ?_assert(lesson2_task03:element_at([a, b, c, d, e, f], 10) =:= {undefined}),
+  ?_assert(lesson2_task03:element_at([a, b, c, d, e, f], 0) =:= {undefined}),
+  ?_assert(lesson2_task04:len([a, b, c, d, e]) =:= 5),
+  ?_assert(lesson2_task04:len([a, b, c, d, e, f]) =:= 6),
+  ?_assert(lesson2_task04:len([d, e, f]) =:= 3),
+  ?_assert(lesson2_task04:len([]) =:= 0),
+  ?_assert(lesson2_task05:reverse([1,2,3]) =:= [3,2,1]),
+  ?_assert(lesson2_task05:reverse([1,2,3,4]) =:= [4,3,2,1]),
+  ?_assert(lesson2_task05:reverse([1,2,3,4,5]) =:= [5,4,3,2,1]),
+  ?_assert(lesson2_task06:is_palindrome([1,2,3,2,1]) =:= true),
+  ?_assert(lesson2_task06:is_palindrome([1,2,3,4,3,2,1]) =:= true),
+  ?_assert(lesson2_task06:is_palindrome([1,2,3,4,5,6]) =:= false),
+  ?_assert(lesson2_task06:is_palindrome([1,2,4,3,2,1]) =:= false),
+  ?_assert(lesson2_task07:flatten([a,[],[b,[c,d],e]]) =:= [a, b, c, d, e]),
+  ?_assert(lesson2_task07:flatten([a,[],[b],[[c,d],e]]) =:= [a, b, c, d, e]),
+  ?_assert(lesson2_task07:flatten([a,[d],[b,[c,d],e]]) =:= [a, d, b, c, d, e]),
+  ?_assert(lesson2_task08:compress([a,a,a,a,b,c,c,a,d,e,e,e,e]) =:= [a, b, c, a, d, e]),
+  ?_assert(lesson2_task08:compress([b,c,c,a,d,e,e,e,s,s]) =:= [b, c, a, d, e, s]),
+  ?_assert(lesson2_task08:compress([b,c,c,c,a,a,d,e,e,e,f,f]) =:= [b, c, a, d, e, f]),
+  ?_assert(lesson2_task09:pack([a, a, a, a, b, c, c, a, a, d, e, e, e, e]) =:= [[a,a,a,a],[b],[c,c],[a,a],[d],[e,e,e,e]]),
+  ?_assert(lesson2_task09:pack([a, b, c, a, d, e]) =:= [[a],[b],[c],[a],[d],[e]]),
+  ?_assert(lesson2_task09:pack([a, a, d, d, a, a, b, c, c, a, a, d, e, e, e, e]) =:= [[a,a],[d,d],[a,a],[b],[c,c],[a,a],[d],[e,e,e,e]]),
+  ?_assert(lesson2_task10:encode([a, a, a, a, b, c, c, a, a, d, e, e, e, e]) =:= [{4,a},{1,b},{2,c},{2,a},{1,d},{4,e}]),
+  ?_assert(lesson2_task10:encode([a, a, a, b, c, c, a, a, d, e, e, e]) =:= [{3,a},{1,b},{2,c},{2,a},{1,d},{3,e}]),
+  ?_assert(lesson2_task10:encode([a, b, c, a, d, e]) =:= [{1,a},{1,b},{1,c},{1,a},{1,d},{1,e}]),
+  ?_assert(lesson2_task11:encode_modified([a, a, a, a, b, c, c, a, a, d, e, e, e, e]) =:= [{4,a},b,{2,c},{2,a},d,{4,e}]),
+  ?_assert(lesson2_task11:encode_modified([a, b, c, a, d, e, e, e, e]) =:= [a,b,c,a,d,{4,e}]),
+  ?_assert(lesson2_task11:encode_modified([a, b, c, a, d, e]) =:= [a,b,c,a,d,e]),
+  ?_assert(lesson2_task12:decode_modified([{4,a},b,{2,c},{2,a},d,{4,e}]) =:= [a,a,a,a,b,c,c,a,a,d,e,e,e,e]),
+  ?_assert(lesson2_task12:decode_modified([{2,a},b,{2,c},a,d,{4,e}]) =:= [a,a,b,c,c,a,d,e,e,e,e]),
+  ?_assert(lesson2_task12:decode_modified([{4,a},{2,b},{2,c},{2,a},{3,d},{4,e}]) =:= [a,a,a,a,b,b,c,c,a,a,d,d,d,e,e,e,e]),
+  ?_assert(lesson2_task13:decode([{4,a},{1,b},{2,c},{2,a},{1,d},{4,e}]) =:= [a,a,a,a,b,c,c,a,a,d,e,e,e,e]),
+  ?_assert(lesson2_task13:decode([{1,a},{1,b},{1,c},{1,a},{1,d},{1,e}]) =:= [a,b,c,a,d,e]),
+  ?_assert(lesson2_task13:decode([{4,a},{1,b},{3,c},{2,a},{1,d},{2,e}]) =:= [a,a,a,a,b,c,c,c,a,a,d,e,e]),
+  ?_assert(lesson2_task14:dublicate([a, b, c, c, d]) =:= [a, a, b, b, c, c, c, c, d, d]),
+  ?_assert(lesson2_task14:dublicate([a, c, d]) =:= [a, a, c, c, d, d]),
+  ?_assert(lesson2_task14:dublicate([a]) =:= [a, a]),
+  ?_assert(lesson2_task15:replicate([a, b, c], 3) =:= [a, a, a, b, b, b, c, c, c]),
+  ?_assert(lesson2_task15:replicate([a, b, c], 1) =:= [a, b, c]),
+  ?_assert(lesson2_task15:replicate([a, c], 4) =:= [a, a, a, a, c, c, c, c])
+  ].
 -endif.
